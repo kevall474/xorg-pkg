@@ -9,7 +9,7 @@ depends=('libdrm' 'systemd-tools' 'mesa')
 makedepends=('xorg-server-devel' 'systemd' 'X-ABI-VIDEODRV_VERSION=24.0' 'git')
 conflicts=('xorg-server<1.20.0' 'X-ABI-VIDEODRV_VERSION<24' 'X-ABI-VIDEODRV_VERSION>=25' 'xf86-video-amdgpu')
 provides=('xf86-video-amdgpu')
-source=('git+http://anongit.freedesktop.org/git/xorg/driver/xf86-video-amdgpu.git')
+source=('git+https://gitlab.freedesktop.org/xorg/driver/xf86-video-amdgpu.git')
 options=('!libtool')
 md5sums=(SKIP)
 
