@@ -1,0 +1,34 @@
+pkgname=xf86-video-amdgpu-git
+pkgdesc="X.org AMD video driver for the Xorg X server (git version)"
+pkgver=19.1.0
+pkgrel=1
+arch=('i686' 'x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('libdrm' 'systemd-tools' 'mesa')
+makedepends=('xorg-server-devel' 'systemd' 'X-ABI-VIDEODRV_VERSION=24.0' 'git')
+conflicts=('xorg-server<1.20.0' 'X-ABI-VIDEODRV_VERSION<24' 'X-ABI-VIDEODRV_VERSION>=25' 'xf86-video-amdgpu')
+provides=('xf86-video-amdgpu')
+source=('git+http://anongit.freedesktop.org/git/xorg/driver/xf86-video-amdgpu.git')
+options=('!libtool')
+md5sums=(SKIP)
+
+pkgver() {
+  cd xf86-video-amdgpu
+
+  echo 19.1.0.$(git rev-list --count master).$(git rev-parse --short master)
+}
+
+build() {
+  cd xf86-video-amdgpu
+
+  ./autogen.sh --prefix=/usr --enable-glamor
+   make -j$(nproc)
+}
+
+package() {
+  cd xf86-video-amdgpu
+
+  make "DESTDIR=${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/license"
+}

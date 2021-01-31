@@ -1,0 +1,41 @@
+pkgname=xf86-video-intel-git
+pkgdesc="X.org Intel i810/i830/i915/945G/G965+ video drivers (git version)"
+pkgver=2.99.917
+pkgrel=1
+arch=('i686' 'x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('mesa' 'libxvmc' 'pixman' 'xcb-util>=0.3.9' 'libsystemd')
+makedepends=('xorg-server-devel' 'X-ABI-VIDEODRV_VERSION=24.0' 'libx11' 'libxrender' 'libxv' 'git' 'libxrandr' 'libxinerama' 'libxcursor' 'libxtst')
+optdepends=('libxrandr: for intel-virtual-output'
+            'libxinerama: for intel-virtual-output'
+            'libxcursor: for intel-virtual-output'
+            'libxtst: for intel-virtual-output')
+provides=('xf86-video-intel-uxa' 'xf86-video-intel-sna' 'xf86-video-intel')
+conflicts=('xorg-server<1.20.0' 'X-ABI-VIDEODRV_VERSION<24' 'X-ABI-VIDEODRV_VERSION>=25'
+           'xf86-video-intel-sna' 'xf86-video-intel-uxa' 'xf86-video-i810' 'xf86-video-intel-legacy')
+options=('!libtool')
+source=("${pkgname}::git+http://anongit.freedesktop.org/git/xorg/driver/xf86-video-intel.git")
+md5sums=(SKIP)
+
+pkgver() {
+  cd ${pkgname}
+
+  echo 2.99.917.$(git rev-list --count master).$(git rev-parse --short master)
+}
+
+build() {
+  cd ${pkgname}
+  ./autogen.sh --prefix=/usr --enable-dri3
+
+  make -j$(nproc)
+}
+
+package() {
+  cd ${pkgname}
+
+  make DESTDIR="${pkgdir}" install
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}
