@@ -15,24 +15,24 @@ provides=('xf86-video-intel-uxa' 'xf86-video-intel-sna' 'xf86-video-intel')
 conflicts=('xorg-server<1.20.0' 'X-ABI-VIDEODRV_VERSION<24' 'X-ABI-VIDEODRV_VERSION>=25'
            'xf86-video-intel-sna' 'xf86-video-intel-uxa' 'xf86-video-i810' 'xf86-video-intel-legacy')
 options=('!libtool')
-source=("${pkgname}::git+https://gitlab.freedesktop.org/xorg/driver/xf86-video-intel.git")
+source=("git+https://gitlab.freedesktop.org/xorg/driver/xf86-video-intel.git")
 md5sums=(SKIP)
 
 pkgver() {
-  cd ${pkgname}
+  cd xf86-video-intel
 
   echo 2.99.917.$(git rev-list --count master).$(git rev-parse --short master)
 }
 
 build() {
-  cd ${pkgname}
+  cd xf86-video-intel
   ./autogen.sh --prefix=/usr --enable-dri3
 
   make -j$(nproc)
 }
 
 package() {
-  cd ${pkgname}
+  cd xf86-video-intel
 
   make DESTDIR="${pkgdir}" install
 
