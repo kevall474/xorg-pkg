@@ -1,0 +1,66 @@
+#Maintainer: kevall474 <kevall474@tuta.io> <https://github.com/kevall474>
+#Credits: Andreas Radke <andyrtr@archlinux.org>
+#Credits: Jan de Groot <jgc@archlinux.org>
+
+#######################################
+
+#Set compiler
+#Set 'GCC' to use GCC
+#Set 'CLANG' to use CLANG
+#Default is empty. It will build with GCC. To build with different compiler just use : env _compiler=(1 or 2) makepkg -s
+if [ -z ${_compiler+x} ]; then
+  _compiler=
+fi
+
+#######################################
+
+pkgname=xorg-util-macros-git
+pkgver=1.19.3
+pkgrel=1
+arch=('x86_64')
+pkgdesc='GNU autoconf macros shared across X.Org projects'
+url="https://gitlab.freedesktop.org/xorg/util/macros.git"
+license=('custom')
+conflicts=('xorg-util-macros')
+provides=('xorg-util-macros')
+source=('macros::git+https://gitlab.freedesktop.org/xorg/util/macros.git')
+md5sums=('SKIP')
+
+pkgver() {
+  cd macros
+  echo 1.19.3.$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
+}
+
+build(){
+
+  cd macros
+
+if [[ $_compiler = "1" ]]; then
+  export CC='gcc -m64'
+  export CXX='g++ -m64'
+elif [[ $_compiler = "2" ]]; then
+  export CC='clang -m64'
+  export CXX='clang++ -m64'
+else
+  export CC='gcc -m64'
+  export CXX='g++ -m64'
+fi
+
+  ./autogen.sh
+
+  ./configure --prefix=/usr --libdir=/usr/lib
+
+  make -j$(nproc)
+}
+
+package(){
+
+  cd macros
+
+  make DESTDIR="$pkgdir" install
+
+  install -m755 -d "${pkgdir}/usr/lib"
+  mv "${pkgdir}/usr/share/pkgconfig" "${pkgdir}/usr/lib/"
+
+  install -Dt "$pkgdir"/usr/share/licenses/"$pkgname" -m644 COPYING
+}
