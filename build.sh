@@ -8,6 +8,14 @@ cd xf86-video-intel-git && makepkg -si
 
 cd ..
 
+cd makedepend-git && makepkg -si
+
+cd ..
+
+cd xorg-util-macros-git && makepkg -si
+
+cd ..
+
 # make a copy of every pkg in pkg/ dir
 
 mkdir pkg
