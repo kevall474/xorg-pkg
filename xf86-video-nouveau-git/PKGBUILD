@@ -1,0 +1,62 @@
+#Maintainer: kevall474 <kevall474@tuta.io> <https://github.com/kevall474>
+#Credits: Andreas Radke <andyrtr@archlinux.org>
+#Credits: buddabrod <buddabrod@gmail.com>
+
+#######################################
+
+#Set compiler
+#Set 'GCC' to use GCC
+#Set 'CLANG' to use CLANG
+#Default is empty. It will build with GCC. To build with different compiler just use : env _compiler=(1 or 2) makepkg -s
+if [ -z ${_compiler+x} ]; then
+  _compiler=
+fi
+
+#######################################
+
+pkgname=xf86-video-nouveau-git
+pkgver=1.0.17
+pkgrel=1
+pkgdesc="Open Source 3D acceleration driver for nVidia cards"
+arch=('x86_64')
+url="https://nouveau.freedesktop.org/"
+license=('custom')
+depends=('systemd-libs' 'mesa')
+makedepends=('xorg-server-devel' 'X-ABI-VIDEODRV_VERSION=24.0' 'systemd' 'git' 'clang' 'llvm' 'llvm-libs' 'gcc' 'gcc-libs')
+conflicts=('xorg-server<1.20' 'X-ABI-VIDEODRV_VERSION<24' 'X-ABI-VIDEODRV_VERSION>=25' 'xf86-video-nouveau')
+provides=('xf86-video-nouveau')
+source=('nouveau::git+https://gitlab.freedesktop.org/xorg/driver/xf86-video-nouveau.git')
+md5sums=('SKIP')
+
+pkgver(){
+  cd nouveau
+  echo 1.0.17.$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
+}
+
+build() {
+if [[ $_compiler = "1" ]]; then
+  export CC='gcc -m64'
+  export CXX='g++ -m64'
+elif [[ $_compiler = "2" ]]; then
+  export CC='clang -m64'
+  export CXX='clang++ -m64'
+else
+  export CC='gcc -m64'
+  export CXX='g++ -m64'
+fi
+  cd "$srcdir"/nouveau
+
+  ./autogen.sh
+
+  ./configure --prefix=/usr --libdir=/usr/lib
+
+  make -j$(nproc)
+}
+
+package_xf86-video-nouveau-git() {
+  cd "$srcdir"/nouveau
+
+  make DESTDIR="$pkgdir" install
+
+  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/license"
+}
