@@ -1,3 +1,15 @@
+#######################################
+
+#Set compiler
+#Set 'GCC' to use GCC
+#Set 'CLANG' to use CLANG
+#Default is empty. It will build with GCC. To build with different compiler just use : env _compiler=(1 or 2) makepkg -s
+if [ -z ${_compiler+x} ]; then
+  _compiler=
+fi
+
+#######################################
+
 pkgname=xf86-video-amdgpu-git
 pkgdesc="X.org AMD video driver for the Xorg X server (git version)"
 pkgver=19.1.0
@@ -20,6 +32,16 @@ pkgver() {
 }
 
 build() {
+if [[ $_compiler = "1" ]]; then
+  export CC='gcc -m64'
+  export CXX='g++ -m64'
+elif [[ $_compiler = "2" ]]; then
+  export CC='clang -m64'
+  export CXX='clang++ -m64'
+else
+  export CC='gcc -m64'
+  export CXX='g++ -m64'
+fi
   cd xf86-video-amdgpu
 
   ./autogen.sh --prefix=/usr --enable-glamor
