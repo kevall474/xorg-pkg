@@ -12,7 +12,7 @@ cd xf86-video-intel-git && _compiler=2 makepkg -si && cd ..
 
 cd xf86-video-nouveau-git && _compiler=2 makepkg -si && cd ..
 
-cd makedepend-git && _compiler=2 makepkg -si && cd ..
+#cd makedepend-git && _compiler=2 makepkg -si && cd ..
 
 cd xorg-util-macros-git && _compiler=2 makepkg -si && cd ..
 
