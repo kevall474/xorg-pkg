@@ -18,9 +18,9 @@ cd xorg-util-macros-git && _compiler=2 makepkg -si && cd ..
 
 # make a copy of every pkg in pkg/ dir
 
-mkdir pkg
+mkdir package
 
-cp -v */*.pkg.tar.zst pkg/
+cp -v */*.pkg.tar.zst package/
 
 # clean build dir
 
