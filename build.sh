@@ -16,7 +16,7 @@ cd xf86-video-nouveau-git && _compiler=2 makepkg -si && cd ..
 
 cd xorg-util-macros-git && _compiler=2 makepkg -si && cd ..
 
-# make a copy of every pkg in pkg/ dir
+# make a copy of every pkg in package/ dir
 
 mkdir package
 
