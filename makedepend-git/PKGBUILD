@@ -32,7 +32,7 @@ md5sums=('SKIP')
 
 pkgver() {
   cd makedepend
-  echo 1.0.6.$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
+  echo 1.0.6.$(date -I | sed 's/-/_/' | sed 's/-/_/').$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
 }
 
 build(){
