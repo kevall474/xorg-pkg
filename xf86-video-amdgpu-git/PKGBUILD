@@ -37,7 +37,7 @@ md5sums=(SKIP)
 pkgver() {
   cd xf86-video-amdgpu
 
-  echo 19.1.0.$(git rev-list --count master).$(git rev-parse --short master)
+  echo 19.1.0.$(date -I | sed 's/-/_/' | sed 's/-/_/').$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
 }
 
 build() {
