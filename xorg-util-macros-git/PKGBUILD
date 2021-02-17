@@ -34,7 +34,7 @@ md5sums=('SKIP')
 
 pkgver() {
   cd macros
-  echo 1.19.3.$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
+  echo 1.19.3.$(date -I | sed 's/-/_/' | sed 's/-/_/').$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
 }
 
 build(){
