@@ -43,7 +43,7 @@ md5sums=(SKIP)
 pkgver() {
   cd xf86-video-intel
 
-  echo 2.99.917.$(git rev-list --count master).$(git rev-parse --short master)
+  echo 2.99.917.$(date -I | sed 's/-/_/' | sed 's/-/_/').$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
 }
 
 build() {
