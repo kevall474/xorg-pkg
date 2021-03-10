@@ -9,9 +9,8 @@
 
 #######################################
 
-#Set compiler
-#Set 'GCC' to use GCC
-#Set 'CLANG' to use CLANG
+#Set '1' to build with GCC
+#Set '2' to build with CLANG
 #Default is empty. It will build with GCC. To build with different compiler just use : env _compiler=(1 or 2) makepkg -s
 if [ -z ${_compiler+x} ]; then
   _compiler=
